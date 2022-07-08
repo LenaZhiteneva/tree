@@ -1,5 +1,5 @@
 package ru.ac.uniyar.mf.lzh;
-
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main
@@ -55,13 +55,13 @@ public class Main
             return str_result;
         }*/
 
-        int ch1, zn1 = 1, ch2, zn2 = 1;
-        ch1 = Integer.parseInt(dop1[0]);
-        ch2 = Integer.parseInt(dop2[0]);
+        Drob d1 = new Drob(), d2 = new Drob();
+        d1.ch = Integer.parseInt(dop1[0]);
+        d2.ch = Integer.parseInt(dop2[0]);
         if (dop1.length == 2)
         {
-            zn1 = Integer.parseInt(dop1[1]);
-            if (zn1 == 0)
+            d1.zn = Integer.parseInt(dop1[1]);
+            if (d1.zn == 0)
             {
                 System.out.println("Division by zero");
                 return "Division by zero";
@@ -69,33 +69,34 @@ public class Main
         }
         if (dop2.length == 2)
         {
-            zn2 = Integer.parseInt(dop2[1]);
-            if (zn2 == 0)
+            d2.zn = Integer.parseInt(dop2[1]);
+            if (d2.zn == 0)
             {
                 System.out.println("Division by zero");
                 return "Division by zero";
             }
         }
-        int res_ch, res_zn;
+
+        Drob result = new Drob();
         switch (operation)
         {
             case "+":
-                res_ch = ch1 * zn2 + ch2 * zn1;
-                res_zn = zn1 * zn2;
+                result.ch = d1.ch * d2.zn + d2.ch * d1.zn;
+                result.zn = d1.zn * d2.zn;
                 break;
             case "-":
-                res_ch = ch1 * zn2 - ch2 * zn1;
-                res_zn = zn1 * zn2;
+                result.ch = d1.ch * d2.zn - d2.ch * d1.zn;
+                result.zn = d1.zn * d2.zn;
                 break;
             case "*":
-                res_ch = ch1 * ch2;
-                res_zn = zn1 * zn2;
+                result.ch = d1.ch * d2.ch;
+                result.zn = d1.zn * d2.zn;
                 break;
             case "/":
-                if (ch2 != 0)
+                if (d2.ch != 0)
                 {
-                    res_ch = ch1 * zn2;
-                    res_zn = zn1 * ch2;
+                    result.ch = d1.ch * d2.zn;
+                    result.zn = d1.zn * d2.ch;
                     break;
                 }
                 else
@@ -108,30 +109,65 @@ public class Main
                 return "Unknown sign";
         }
 
-        for (int i = res_ch / 2 + 1; i != 1; i--)
+        for (int i = Math.abs(result.ch) / 2 + 1; i != 1; i--)
         {
-            if (res_zn % i == 0 && res_ch % i == 0)
+            if (result.zn % i == 0 && result.ch % i == 0)
             {
-                res_zn = res_zn / i;
-                res_ch = res_ch / i;
+                result.zn = result.zn / i;
+                result.ch = result.ch / i;
             }
         }
 
-        if (res_zn == 1)
+        if (result.zn == 1)
         {
-            System.out.println("Answer: " + res_ch);
-            String str_result = String.valueOf(res_ch);
+            System.out.println("Answer: " + result.ch);
+            String str_result = String.valueOf(result.ch);
             return str_result;
         }
         else
         {
-            System.out.println("Answer: " + res_ch + "/" + res_zn);
-            String str_result = String.valueOf(res_ch);
-            String dop = String.valueOf(res_zn);
+            System.out.println("Answer: " + result.ch + "/" + result.zn);
+            String str_result = String.valueOf(result.ch);
+            String dop = String.valueOf(result.zn);
             str_result = str_result + "/" + dop;
             return str_result;
         }
     }
+
+    /*public static int Moda(String num1, String num2)
+    {
+        ArrayList <Integer> numbers = new ArrayList <> (10);
+        for (int i = 0; i < 10; i++)
+        {
+            numbers.add(0);
+        }
+        for (int i = 0; i < num1.length(); i++)
+        {
+            if (num1.charAt(i) <= '0' && num1.charAt(i) <= '9')
+            {
+                int dop = num1.charAt(i) - 48;
+                numbers.set(dop, numbers.get(dop) + 1);
+            }
+        }
+        for (int i = 0; i < num2.length(); i++)
+        {
+            if (num2.charAt(i) <= '0' && num2.charAt(i) <= '9')
+            {
+                int dop = num2.charAt(i) - 48;
+                numbers.set(dop, numbers.get(dop) + 1);
+            }
+        }
+        int iter_of_max = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            if (numbers.get(iter_of_max) < numbers.get(i))
+            {
+                iter_of_max = i;
+            }
+        }
+        System.out.println("Moda: " + iter_of_max);
+        return iter_of_max;
+    }*/
 
     public static void main(String[] args)
     {
@@ -140,5 +176,6 @@ public class Main
         String operation = in.next();
         String num2 = in.next();
         calculate(num1, operation, num2);
+        //Moda(num1, num2);
     }
 }

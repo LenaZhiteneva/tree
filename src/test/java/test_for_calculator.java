@@ -59,4 +59,10 @@ public class test_for_calculator
         String actual = Main.calculate("1/2", "/", "1/2");
         assertEquals("1", actual);
     }
+    @Test
+    void test10 ()
+    {
+        String actual = Main.calculate("0", "-", "3");
+        assertEquals("-3", actual);
+    }
 }
