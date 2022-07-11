@@ -56,6 +56,19 @@ public class Node
         }
         return null;
     }
+
+    public Node find_with_id(String id)
+    {
+        for (int i = 0; i < children.size(); i++)
+        {
+            if (children.get(i).getId() == id)
+            {
+                return children.get(i);
+            }
+        }
+        return null;
+    }
+
     public String getId()
     {
         return id;
@@ -113,6 +126,30 @@ public class Node
 
     }
 
+    private String get_tree_html(int level, String str)
+    {
+        str += "<ul>";
+        for (int i = 0; i < level; i++)
+        {
+            str += "-----";
+        }
+        str += this.name + " <a href=\"edit_node/" + id + "\">Редактировать</a>";
+        str += "</ul>";
+        if (children.size() == 0)
+        {
+            return str;
+        }
+        else
+        {
+            for (int i = 0; i < children.size(); i++)
+            {
+                str += children.get(i).get_tree_html(level + 1, "");
+            }
+            return str;
+        }
+
+    }
+
     public void to_file() throws IOException
     {
         String for_file = get_tree(0, "");
@@ -126,5 +163,13 @@ public class Node
         String for_file = objectMapper.writeValueAsString(node);
         String path = "file_for_json.txt";
         Files.write(Paths.get(path), for_file.getBytes());
+    }
+
+    public String forHTML()
+    {
+        String result = "";
+        result += get_tree_html(0,"");
+        result += "</ul>";
+        return result;
     }
 }
